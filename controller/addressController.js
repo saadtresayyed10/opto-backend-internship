@@ -31,7 +31,7 @@ const getSingleAddress = async (req, res) => {
     const address = await Address.findById(id);
 
     if (!address) {
-      res.status(404).json({ message: "Provided id is incorrect" });
+      res.status(404).json({ message: "Provided id does not exist" });
     }
 
     res.status(200).json({ success: true, data: address });
