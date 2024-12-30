@@ -14,6 +14,11 @@ const addAddress = async (req, res) => {
 const getAllAddress = async (req, res) => {
   try {
     const address = await Address.find();
+
+    if (!address) {
+      res.status(200).json({ message: "Database is empty" });
+    }
+
     res.status(200).json({ success: true, data: address });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -53,4 +58,27 @@ const updateAddress = async (req, res) => {
   }
 };
 
-module.exports = { addAddress, getAllAddress, getSingleAddress, updateAddress };
+const deleteAddress = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deletedAddress = await Address.findByIdAndDelete(id);
+
+    if (!deletedAddress) {
+      res.status(404).json({ message: "Address not found" });
+    }
+
+    res
+      .status(200)
+      .json({ success: true, message: "Address deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = {
+  addAddress,
+  getAllAddress,
+  getSingleAddress,
+  updateAddress,
+  deleteAddress,
+};
